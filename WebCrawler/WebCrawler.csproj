@@ -58,6 +58,8 @@
     </Compile>
     <Compile Include="Interfaces\IInternet.cs" />
     <Compile Include="Interfaces\IWebPage.cs" />
+    <Compile Include="WebCrawler\CrawlException.cs" />
+    <Compile Include="WebCrawler\InternetParseException.cs" />
     <Compile Include="WebCrawler\Internet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

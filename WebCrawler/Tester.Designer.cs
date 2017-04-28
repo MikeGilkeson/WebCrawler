@@ -30,7 +30,7 @@
         {
             this.inputTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.outputLabel = new System.Windows.Forms.Label();
             this.outputTextBox = new System.Windows.Forms.TextBox();
             this.runButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -55,14 +55,14 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Input";
             // 
-            // label3
+            // outputLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(530, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Output";
+            this.outputLabel.AutoSize = true;
+            this.outputLabel.Location = new System.Drawing.Point(401, 10);
+            this.outputLabel.Name = "outputLabel";
+            this.outputLabel.Size = new System.Drawing.Size(39, 13);
+            this.outputLabel.TabIndex = 5;
+            this.outputLabel.Text = "Output";
             // 
             // outputTextBox
             // 
@@ -94,7 +94,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(806, 338);
             this.Controls.Add(this.runButton);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.outputLabel);
             this.Controls.Add(this.outputTextBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.inputTextBox);
@@ -109,7 +109,7 @@
 
         private System.Windows.Forms.TextBox inputTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label outputLabel;
         private System.Windows.Forms.TextBox outputTextBox;
         private System.Windows.Forms.Button runButton;
     }
