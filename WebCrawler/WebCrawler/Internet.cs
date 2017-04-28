@@ -1,17 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Concurrent;
 using WebCrawler.Interfaces;
 
 namespace WebCrawler
 {
     public class Internet : IInternet
     {
-        private Dictionary<string, IWebPage> _webPagesDictionary = new Dictionary<string, IWebPage>();
-        public IWebPage[] Pages { private set; get; }
+        private ConcurrentDictionary<string, IWebPage> _webPagesDictionary = new ConcurrentDictionary<string, IWebPage>();
+        public IWebPage FirstPage { private set; get; }
 
         public IWebPage this[string address]
         {
@@ -29,15 +25,14 @@ namespace WebCrawler
         static public Internet Parse(string internetJson)
         {
             var internet = new Internet();
-            var parsed = JObject.Parse(internetJson);
-            var webPages = new List<IWebPage>();
-            foreach (var token in parsed["pages"].Children())
+            var jsonObject = JObject.Parse(internetJson);
+            foreach (var token in jsonObject["pages"].Children())
             {
                 var page = token.ToObject<WebPage>();
-                internet._webPagesDictionary.Add(page.Address, page);
-                webPages.Add(token.ToObject<WebPage>());
+                if (internet._webPagesDictionary.Count == 0)
+                    internet.FirstPage = page;
+                internet._webPagesDictionary.TryAdd(page.Address, page);
             }
-            internet.Pages = webPages.ToArray();
             return internet;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,9 @@ namespace WebCrawler
     public class WebCrawler
     {
         IInternet _internet;
-        HashSet<string> _visitedPages = new HashSet<string>();
-        HashSet<string> _skipped = new HashSet<string>();
-        HashSet<string> _badLinks = new HashSet<string>();
+        ConcurrentDictionary<string, object> _visitedPages = new ConcurrentDictionary<string, object>();
+        ConcurrentDictionary<string, object> _skipped = new ConcurrentDictionary<string, object>();
+        ConcurrentDictionary<string, object> _badLinks = new ConcurrentDictionary<string, object>();
 
         public WebCrawler(IInternet internet)
         {
@@ -22,33 +23,33 @@ namespace WebCrawler
         public void CrawlInternet(IWebPage webPage)
         {
             if (!_internet.IsValidPage(webPage.Address))
-                _badLinks.Add(webPage.Address);
-            else if (_visitedPages.Contains(webPage.Address))
-                _skipped.Add(webPage.Address);
+                _badLinks.TryAdd(webPage.Address, null);
+            else if (_visitedPages.ContainsKey(webPage.Address))
+                _skipped.TryAdd(webPage.Address, null);
             else
             {
-                _visitedPages.Add(webPage.Address);
-                foreach (var linkAddress in webPage.Links)
-                {
-                    if (_internet.IsValidPage(linkAddress))
-                        CrawlInternet(_internet[linkAddress]);
-                    else
-                        _badLinks.Add(linkAddress);
-                }
+                _visitedPages.TryAdd(webPage.Address, null);
+                Parallel.ForEach<string>(webPage.Links, linkAddress =>
+                    {
+                        if (_internet.IsValidPage(linkAddress))
+                            CrawlInternet(_internet[linkAddress]);
+                        else
+                            _badLinks.TryAdd(linkAddress, null);
+                    });
             }
         }
 
         public string GetSuccessfullyVisitsJson()
         {
-            return JsonConvert.SerializeObject(_visitedPages);
+            return JsonConvert.SerializeObject(_visitedPages.Keys);
         }
         public string GetSkippedJson()
         {
-            return JsonConvert.SerializeObject(_skipped);
+            return JsonConvert.SerializeObject(_skipped.Keys);
         }
         public string GetErrorsJson()
         {
-            return JsonConvert.SerializeObject(_badLinks);
+            return JsonConvert.SerializeObject(_badLinks.Keys);
         }
     }
 }
