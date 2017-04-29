@@ -17,13 +17,16 @@ namespace WebCrawler
             {
                 outputLabel.Text = "Output";
                 var internet = Internet.Parse(inputTextBox.Text);
-                var webCrawler = new WebCrawler(internet);
+                var visitedPages = new WebAddressCollection();
+                var skippedPages = new WebAddressCollection();
+                var badPages = new WebAddressCollection();
+                var webCrawler = new WebCrawler(internet, visitedPages, skippedPages, badPages);
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 webCrawler.CrawlInternet(internet.FirstPage);
                 stopwatch.Stop();
                 outputLabel.Text = string.Format("Output - time to CrawlInternet: {0}", stopwatch.Elapsed);
-                outputTextBox.Text = string.Format("Success:\r\n{0}\r\n\r\nSkipped:\r\n{1}\r\n\r\nError:\r\n{2}", webCrawler.GetSuccessfullyVisitsJson(), webCrawler.GetSkippedJson(), webCrawler.GetErrorsJson());
+                outputTextBox.Text = string.Format("Success:\r\n{0}\r\n\r\nSkipped:\r\n{1}\r\n\r\nError:\r\n{2}", visitedPages.GetJson(), skippedPages.GetJson(), badPages.GetJson());
             }
             catch (InternetParseException internetParseException)
             {

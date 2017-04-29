@@ -63,6 +63,8 @@
     <Compile Include="WebCrawler\Internet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\IWebAddressCollection.cs" />
+    <Compile Include="WebCrawler\WebAddressCollection.cs" />
     <Compile Include="WebCrawler\WebCrawler.cs" />
     <Compile Include="WebCrawler\WebPage.cs" />
     <EmbeddedResource Include="Tester.resx">

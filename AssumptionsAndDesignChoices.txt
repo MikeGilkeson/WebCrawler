@@ -1,0 +1,7 @@
+- I used a Form instead of setting up unit tests so I could test differnt scenarios quicker.
+- I would change the way WebCrawler collections are used. Since they are created outside of the WebCrawler object they could be modified while CrawlInternet is running. I should probably make them get returned by the CrawlInternet method.
+- Using a ThreadPool instead of Parallel.ForEach would improve performance. I used Parallel.ForEach because it was quicker and easier to block the CrawlInternet from returning until the crawl was completed.
+- Assumed internet JSON would be in the expected format or the entire case fails
+- Assumed there won't be any duplicate pages with the same address, if so only the last would be used.
+- Assumed any exception that occurs during CrawlInternet should be stop the entire method call
+
